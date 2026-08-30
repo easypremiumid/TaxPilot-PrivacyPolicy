@@ -1,108 +1,116 @@
-# Kebijakan Privasi TaxPilot - Faktur & BuPot Downloader
+# Kebijakan Privasi TaxPilot - Coretax Assistant
 
-**Tanggal berlaku: 30 Agustus 2026**
+**Tanggal berlaku: 30 Agustus 2026**  
+**Terakhir diperbarui: 30 Agustus 2026**
 
-**Developer:** I Kadek Dharma Putra
+TaxPilot - Coretax Assistant (selanjutnya disebut **“TaxPilot”**) adalah ekstensi Chrome yang membantu pengguna menjalankan otomasi Credit/Uncredit E-Faktur serta mengunduh dan memberi nama file Faktur Pajak dan Bukti Potong pada situs Coretax DJP. Kebijakan ini menjelaskan data yang diproses, tujuan pemrosesan, penyimpanan, pembagian data, dan pilihan pengguna.
 
-**Contact:** dharmaputra7777@gmail.com
+## 1. Pengelola dan kontak
 
-Kebijakan Privasi ini menjelaskan cara ekstensi Chrome **TaxPilot - Faktur & BuPot Downloader** (selanjutnya disebut “TaxPilot”) memproses data ketika digunakan untuk mengunduh dan mengganti nama PDF Faktur Pajak atau Bukti Potong dari Coretax Direktorat Jenderal Pajak.
+TaxPilot dikelola oleh **I Kadek Dharma Putra**. Untuk pertanyaan privasi, permintaan akses, koreksi, atau penghapusan akun, hubungi:
 
-## 1. Ringkasan
+**Email: dharmaputra7777@gmail.com**
 
-TaxPilot bekerja secara lokal di browser pengguna. TaxPilot tidak mengirimkan isi PDF, data perpajakan, kredensial, riwayat penggunaan, atau data pribadi pengguna kepada pengembang maupun server eksternal milik TaxPilot.
-
-TaxPilot tidak menjual data, tidak menggunakan data untuk iklan, tidak melakukan pelacakan pengguna, dan tidak memakai layanan analitik pihak ketiga.
+Placeholder di atas harus diganti dengan alamat email yang aktif sebelum ekstensi dipublikasikan.
 
 ## 2. Data yang diproses
 
-Untuk menjalankan fungsi unduh dan penamaan otomatis, TaxPilot dapat memproses data berikut:
+### A. Data akun dan autentikasi
 
-- isi PDF Faktur Pajak dan Bukti Potong yang dipilih untuk diunduh;
-- nomor faktur, nomor bukti potong, masa pajak, serta nama pihak yang tercantum di dalam PDF;
-- alamat atau URL PDF sementara yang dibuat oleh halaman Coretax;
-- nama berkas, identitas unduhan, dan status penyelesaian unduhan;
-- jenis dokumen yang dipilih pengguna;
-- ringkasan proses, seperti jumlah berhasil, jumlah gagal, durasi, dan rata-rata waktu per PDF; dan
-- pesan status teknis yang diperlukan untuk menampilkan hasil proses.
+Saat pengguna mendaftar atau login, TaxPilot memproses:
 
-Dokumen perpajakan dapat memuat data pribadi atau data usaha. TaxPilot hanya memproses bagian yang diperlukan untuk mengunduh, membaca, dan menentukan nama berkas.
+- alamat email;
+- password yang dimasukkan langsung ke layanan autentikasi Supabase;
+- ID pengguna, nama tampilan jika tersedia, status akses, paket, dan tanggal berakhir akses;
+- token akses dan token penyegaran sesi;
+- kode promo/trial dan status penukarannya; serta
+- versi ekstensi dan hasil pemeriksaan hak akses.
 
-## 3. Tujuan pemrosesan
+TaxPilot tidak menyimpan password di penyimpanan ekstensi atau basis data aplikasi. Password diproses oleh Supabase Auth. Token sesi disimpan sementara melalui `chrome.storage.session` dan dibersihkan saat logout atau ketika sesi browser berakhir sesuai perilaku Chrome.
 
-Data tersebut hanya digunakan untuk:
+### B. Data dokumen pajak dan konten Coretax
 
-- membuka modul Coretax sesuai jenis dokumen yang dipilih;
-- menjalankan unduhan PDF dari tab Coretax yang aktif;
-- membaca teks PDF secara lokal menggunakan PDF.js yang disertakan bersama ekstensi;
-- membuat nama berkas berdasarkan nomor dokumen, masa pajak, dan nama pihak terkait;
-- mencegah nama berkas yang tidak sesuai atau unduhan ganda selama proses berjalan;
-- menampilkan progres, hasil, kegagalan, waktu, dan rata-rata pemrosesan; serta
-- menghentikan proses ketika pengguna menekan tombol **Stop**.
+Ketika pengguna secara sadar menjalankan modul, TaxPilot dapat membaca dan memproses secara lokal:
 
-## 4. Cara dan lokasi pemrosesan
+- nomor Faktur Pajak atau Bukti Potong;
+- nama lawan transaksi, masa dan tahun pajak, serta informasi yang tampil pada dokumen;
+- pilihan status Credit/Uncredit;
+- data Excel/CSV yang diimpor, nama file dan lembar kerja, serta kesalahan validasi;
+- konten dan metadata PDF, nama file tujuan, serta status unduhan;
+- URL tab Coretax yang sedang dipilih; dan
+- progres operasi dan log teknis, yang dapat memuat nomor dokumen dan hasil proses.
 
-Pemrosesan berlangsung di perangkat pengguna melalui Chrome atau browser berbasis Chromium yang kompatibel. Pembacaan PDF dan pembuatan nama berkas dilakukan di dalam tab Coretax serta komponen lokal ekstensi.
+Data impor, isi PDF, dan konten dokumen pajak tersebut diproses di perangkat pengguna untuk menjalankan fungsi yang diminta. Data tersebut tidak dikirim ke TaxPilot, Supabase, Resend, atau Cloudflare.
 
-Komunikasi jaringan yang diperlukan untuk mengambil PDF tetap ditujukan ke sumber PDF pada Coretax atau URL sementara yang dibuat oleh halaman Coretax. TaxPilot tidak mengunggah salinan PDF ke server pengembang.
+TaxPilot tidak meminta, membaca, atau menyimpan username, password, maupun OTP Coretax. Pengguna harus login sendiri pada situs resmi Coretax dan TaxPilot hanya bekerja dalam sesi Coretax yang sudah aktif.
 
-## 5. Penyimpanan dan masa retensi
+### C. Data teknis halaman web
 
-TaxPilot menggunakan penyimpanan lokal atau sesi milik Chrome untuk menyimpan:
+Saat halaman konfirmasi email atau kebijakan privasi dibuka, penyedia hosting Cloudflare dapat memproses data permintaan web standar seperti alamat IP, jenis browser, waktu akses, dan informasi keamanan jaringan sesuai kebijakan layanannya. Tautan konfirmasi menggunakan fragmen URL agar token tidak disertakan dalam permintaan HTTP awal ke Cloudflare. Halaman konfirmasi menghapus fragmen tersebut dari bilah alamat dan tidak menyimpannya dalam basis data aplikasi.
 
-- pilihan jenis dokumen;
-- status dan ringkasan proses; serta
-- metadata nama berkas sementara yang diperlukan selama unduhan berjalan.
+## 3. Tujuan penggunaan data
 
-Data sementara di memori, termasuk Blob atau byte PDF, hanya digunakan selama proses pembacaan dan unduhan. Berkas PDF yang selesai diunduh disimpan di lokasi unduhan normal browser dan tetap berada di perangkat pengguna sampai pengguna menghapusnya.
+Data hanya digunakan untuk:
 
-Pengguna dapat menghapus data ekstensi melalui pengaturan browser, menghapus ekstensi, atau menghapus berkas unduhan secara manual.
+- membuat, mengautentikasi, dan menjaga keamanan akun;
+- memeriksa paket, trial, dan hak akses pengguna;
+- menjalankan otomasi Coretax yang dipilih pengguna;
+- mengunduh dan memberi nama dokumen sesuai pilihan pengguna;
+- menyimpan preferensi, data impor, progres, dan log lokal agar alur dapat dilanjutkan;
+- mengirim email konfirmasi akun dan email layanan penting;
+- mencegah penyalahgunaan, menyelesaikan masalah, dan menjaga keamanan layanan; serta
+- memenuhi kewajiban hukum yang berlaku apabila diwajibkan.
 
-## 6. Pembagian data kepada pihak lain
+TaxPilot tidak menjual data pengguna, tidak menayangkan iklan berbasis minat, tidak menggunakan data untuk penilaian kredit, dan tidak menggunakan data untuk tujuan yang tidak berkaitan dengan fungsi TaxPilot.
 
-TaxPilot tidak mengirim, menjual, menyewakan, atau membagikan data yang diproses kepada pengembang, pengiklan, broker data, maupun pihak ketiga lainnya.
+## 4. Penyimpanan dan masa retensi
 
-Penggunaan situs dan layanan Coretax tetap tunduk pada kebijakan serta ketentuan yang ditetapkan oleh Direktorat Jenderal Pajak. TaxPilot tidak mengendalikan penyimpanan atau pemrosesan data yang dilakukan oleh Coretax itu sendiri.
+- **Di perangkat:** pengaturan, data impor, progres, dan log disimpan melalui `chrome.storage.local` sampai ditimpa, dihapus oleh pengguna, data browser dibersihkan, atau ekstensi dihapus.
+- **Sesi:** token autentikasi dan metadata sementara unduhan disimpan melalui `chrome.storage.session` dan dibersihkan saat logout atau ketika sesi browser berakhir sesuai perilaku Chrome.
+- **Server:** data akun dan hak akses disimpan selama akun atau layanan masih aktif dan selama diperlukan untuk tujuan administrasi, keamanan, atau hukum. Catatan pemeriksaan akses dihapus otomatis setelah **180 hari**.
+- **Penghapusan akun:** pengguna dapat meminta penghapusan melalui email dukungan. Data yang wajib dipertahankan karena kewajiban hukum atau keamanan dapat disimpan sebatas masa yang diperlukan.
 
-## 7. Kredensial dan autentikasi
+## 5. Penyedia layanan dan pembagian data
 
-TaxPilot tidak meminta, membaca, atau menyimpan nama pengguna, kata sandi, token autentikasi, maupun kredensial Coretax. Ekstensi berjalan pada tab Coretax yang telah dibuka dan diautentikasi sendiri oleh pengguna.
+TaxPilot menggunakan penyedia berikut hanya untuk mendukung fungsi layanan:
 
-## 8. Izin browser
+- **Supabase:** autentikasi, sesi akun, basis data hak akses, trial/promo, dan catatan pemeriksaan akses;
+- **Resend:** pengiriman email konfirmasi dan email layanan, termasuk alamat penerima serta metadata pengiriman;
+- **Cloudflare:** hosting halaman konfirmasi dan kebijakan privasi serta keamanan jaringan; dan
+- **Coretax DJP:** situs tujuan yang berinteraksi dengan TaxPilot atas perintah pengguna dalam sesi Coretax pengguna sendiri.
 
-TaxPilot menggunakan izin berikut:
+Data tidak dibagikan kepada pihak lain kecuali kepada penyedia layanan yang diperlukan, atas persetujuan pengguna, untuk keamanan dan pencegahan penyalahgunaan, atau jika diwajibkan hukum. Akses manusia terhadap data dibatasi pada kebutuhan dukungan yang disetujui pengguna, penyelidikan keamanan/penyalahgunaan, pemenuhan kewajiban hukum, atau data yang telah diagregasi/dianonimkan untuk operasional internal.
 
-- **activeTab**: mengakses tab aktif setelah pengguna menjalankan TaxPilot;
-- **scripting**: menjalankan fungsi pengunduhan dan pembacaan PDF pada tab Coretax yang dipilih pengguna;
-- **downloads**: mengelola nama berkas serta memantau keberhasilan atau kegagalan unduhan; dan
-- **storage**: menyimpan pilihan pengguna, status proses, dan ringkasan hasil secara lokal.
+## 6. Keamanan
 
-Izin tersebut hanya digunakan untuk fungsi utama TaxPilot dan bukan untuk pelacakan aktivitas penelusuran.
+Komunikasi jaringan TaxPilot menggunakan HTTPS. Izin ekstensi dibatasi pada fungsi yang diperlukan dan dua host yang digunakan: situs Coretax DJP serta proyek Supabase TaxPilot. Semua kode yang dijalankan oleh ekstensi disertakan dalam paket ekstensi; TaxPilot tidak mengunduh atau menjalankan kode jarak jauh.
 
-## 9. Keamanan dan tanggung jawab pengguna
+Tidak ada sistem yang sepenuhnya bebas risiko. Pengguna tetap bertanggung jawab menjaga keamanan akun Google Chrome, email, Coretax, perangkat, dan passwordnya.
 
-TaxPilot dirancang agar pemrosesan data tetap berada di perangkat pengguna. Namun, tidak ada perangkat lunak yang dapat menjamin keamanan mutlak. Pengguna bertanggung jawab untuk:
+## 7. Pilihan dan hak pengguna
 
-- menggunakan TaxPilot hanya pada akun dan dokumen yang berhak diakses;
-- menjaga keamanan perangkat serta akun Coretax;
-- memeriksa nama dan isi berkas hasil unduhan; dan
-- melindungi PDF perpajakan yang tersimpan di perangkat.
+Pengguna dapat:
 
-## 10. Hak dan kontrol pengguna
+- tidak memberikan data dengan tidak membuat akun atau tidak menjalankan modul;
+- menghapus data lokal melalui fitur bersihkan/reset bila tersedia, menghapus data situs/ekstensi di Chrome, atau menghapus ekstensi;
+- logout untuk mengakhiri sesi TaxPilot;
+- meminta akses, koreksi, atau penghapusan data akun melalui email dukungan; dan
+- mencabut penggunaan dengan berhenti memakai TaxPilot.
 
-Pengguna dapat kapan saja:
+Menghapus ekstensi tidak secara otomatis menghapus akun server. Hubungi email dukungan untuk permintaan penghapusan akun server.
 
-- menghentikan proses melalui tombol **Stop**;
-- menutup atau menonaktifkan TaxPilot;
-- menghapus data lokal ekstensi melalui pengaturan browser;
-- menghapus berkas PDF dari folder unduhan; atau
-- menghapus instalasi TaxPilot untuk menghentikan seluruh pemrosesan oleh ekstensi.
+## 8. Anak-anak
 
-## 11. Perubahan kebijakan
+TaxPilot ditujukan untuk pengguna yang berwenang mengelola administrasi pajak, bukan untuk anak-anak. TaxPilot tidak dengan sengaja mengumpulkan data anak-anak.
 
-Kebijakan Privasi ini dapat diperbarui apabila fungsi, izin, atau cara pemrosesan data TaxPilot berubah. Tanggal berlaku di bagian atas dokumen akan diperbarui ketika terdapat perubahan material.
+## 9. Kepatuhan Penggunaan Terbatas Chrome Web Store
 
-## 12. Kontak
+Penggunaan informasi yang diterima dari API Chrome dan izin ekstensi mematuhi **Kebijakan Data Pengguna Chrome Web Store**, termasuk persyaratan **Penggunaan Terbatas (Limited Use)**. Data tersebut hanya digunakan untuk menyediakan atau meningkatkan fungsi TaxPilot yang terlihat dan diminta pengguna. Data tidak digunakan untuk iklan yang dipersonalisasi, tidak dijual, tidak dipindahkan untuk penilaian kredit, dan tidak dibaca manusia kecuali dalam pengecualian dukungan, keamanan, hukum, atau agregasi/anonymisasi yang diizinkan kebijakan.
 
-Untuk pertanyaan mengenai privasi atau penggunaan TaxPilot, hubungi pengembang melalui alamat dukungan atau kanal kontak yang tercantum pada halaman distribusi resmi ekstensi.
+## 10. Perubahan kebijakan
 
+Kebijakan ini dapat diperbarui apabila fungsi, penyedia layanan, atau persyaratan hukum berubah. Tanggal pembaruan akan dicantumkan di bagian atas. Jika perubahan bersifat material, pemberitahuan akan diberikan melalui halaman ini, ekstensi, atau email layanan bila sesuai.
+
+## 11. Pernyataan independensi
+
+TaxPilot bukan produk resmi dan tidak berafiliasi dengan Direktorat Jenderal Pajak atau Kementerian Keuangan Republik Indonesia. Pengguna wajib memakai TaxPilot hanya pada akun dan dokumen pajak yang berhak diakses.
